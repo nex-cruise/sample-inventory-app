@@ -63,10 +63,11 @@ public class ContactController {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
+	@SuppressWarnings({ "rawtypes" })
 	@DeleteMapping({ "/{contactId}" })
-	@ResponseStatus(HttpStatus.NOT_IMPLEMENTED)
-	public void deleteContact(@NotNull @PathVariable("contactId") UUID contactId) {
+	public ResponseEntity deleteContact(@NotNull @PathVariable("contactId") UUID contactId) {
 		contactService.deleteContactById(contactId);
+		return new ResponseEntity(HttpStatus.OK);
 	}
 	
 }

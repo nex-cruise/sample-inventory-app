@@ -29,7 +29,7 @@ import lombok.NoArgsConstructor;
 public class BaseDto {
 	
 	@Null
-	@JsonProperty("empId")
+	@JsonProperty("uid")
 	UUID id;
 
 	@Null

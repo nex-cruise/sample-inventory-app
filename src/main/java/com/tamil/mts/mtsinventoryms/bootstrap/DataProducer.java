@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 public class DataProducer {
 
-	public ContactDto getValidContactDto() {
+	public static ContactDto getValidContactDto() {
 		ContactDto contact = ContactDto.contactBuilder().id(UUID.randomUUID())
 				.companyName(RandomStringUtils.randomAlphanumeric(3, 50))
 				.contactName(RandomStringUtils.randomAlphabetic(3, 50)).contactNumber(getValidMobileNumber())
@@ -37,7 +37,7 @@ public class DataProducer {
 		return contact;
 	}
 
-	public ContactDto getNewContactDto() {
+	public static ContactDto getNewContactDto() {
 		ContactDto contact = ContactDto.contactBuilder().companyName(RandomStringUtils.randomAlphanumeric(3, 50))
 				.contactName(RandomStringUtils.randomAlphabetic(3, 50)).contactNumber(getValidMobileNumber())
 				.firstName(RandomStringUtils.randomAlphabetic(3, 30))
@@ -50,7 +50,7 @@ public class DataProducer {
 		return contact;
 	}
 
-	public ContactDto getInvalidContactDto() {
+	public static ContactDto getInvalidContactDto() {
 		ContactDto contact = ContactDto.contactBuilder().companyName(RandomStringUtils.randomAlphanumeric(3, 100))
 				.contactName(RandomStringUtils.randomAlphabetic(51, 100)).contactNumber(getValidMobileNumber())
 				.firstName(RandomStringUtils.randomAlphabetic(2, 40))
@@ -60,7 +60,7 @@ public class DataProducer {
 		return contact;
 	}
 
-	public String getValidMobileNumber() {
+	public static String getValidMobileNumber() {
 		return String.valueOf((int) RandomUtils.nextDouble(Math.pow(10, 9), Math.pow(10, 10)));
 	}
 

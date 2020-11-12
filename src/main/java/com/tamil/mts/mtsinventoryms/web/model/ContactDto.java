@@ -14,6 +14,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
@@ -34,30 +35,34 @@ public class ContactDto extends BaseDto {
 
 	@NotBlank
 	@Size(min = 3, max = 50)
-	@JsonProperty("name")
+	@JsonProperty("contactName")
 	String contactName;
 
 	@NotBlank
 	@Size(min = 3, max = 50)
-	@JsonProperty("name")
+	@JsonProperty("companyName")
 	String companyName;
 
 	@NotBlank
 	@Size(min = 3, max = 30)
-	@JsonProperty("name")
+	@JsonProperty("firstName")
 	String firstName;
 
 	@NotEmpty
 	@Size(min = 3, max = 30)
-	@JsonProperty("name")
+	@JsonProperty("lastName")
 	String lastName;
 
 	@NotEmpty
 	@Email
+	@JsonProperty("email")
+	@JsonAlias({"contactEmail"})
 	String email;
 
 	@NotBlank
 	@Pattern(regexp = "^(\\d{3}[- .]?){2}\\d{4}$")
+	@JsonProperty("contactNumber")
+	@JsonAlias({"phoneNumber"})
 	String contactNumber;
 
 	String facebookId;
