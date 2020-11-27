@@ -24,17 +24,7 @@ import org.springframework.web.context.WebApplicationContext;
  *
  */
 @WebMvcTest(HomeController.class)
-public class HomeControllerTest {
-
-	@Autowired
-	WebApplicationContext wac;
-
-	MockMvc mockMvc;
-
-	@BeforeEach
-	void setUp() {
-		mockMvc = MockMvcBuilders.webAppContextSetup(wac).apply(springSecurity()).build();
-	}
+public class HomeControllerTest extends BaseSecurityIT {
 
 	// This gives a mock user for the test purpose, it doesn't goes through the
 	// actual authentication configured for the application.
@@ -44,20 +34,28 @@ public class HomeControllerTest {
 		mockMvc.perform(get("/home")).andExpect(status().isOk());
 	}
 
-	//Providing no user for test method fails as spring security is configured.
+	// Providing no user for test method fails as spring security is configured.
 	@Test
 	void testHomeNoUser() throws Exception {
 		mockMvc.perform(get("/home")).andExpect(status().is4xxClientError());
 	}
-	
-	//This test goes through the authentication configuration to validate the given user credentials
+
+	// This test goes through the authentication configuration to validate the given
+	// user credentials
 	@Test
 	void testHomeTestInvalidUser() throws Exception {
-		mockMvc.perform(get("/home").with(httpBasic("invalidserid", "blahblah"))).andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/home").with(httpBasic("invalidserid", "blahblah")))
+				.andExpect(status().is4xxClientError());
 	}
-	
+
 	@Test
 	void testHomeTestValidUser() throws Exception {
 		mockMvc.perform(get("/home").with(httpBasic("murugan", "murugan425"))).andExpect(status().isOk());
+	}
+	
+	//TDD: To bypass the authentication for index page url '/'.
+	@Test
+	void testIndexPage() throws Exception {
+		mockMvc.perform(get("/")).andExpect(status().isOk());
 	}
 }
