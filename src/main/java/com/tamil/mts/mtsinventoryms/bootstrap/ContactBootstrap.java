@@ -26,8 +26,6 @@ public class ContactBootstrap implements CommandLineRunner {
 
 	private final ContactService contactService;
 
-	private final DataProducer dataProducer;
-
 	@Override
 	public void run(String... args) throws Exception {
 		loadContacts();
@@ -36,7 +34,7 @@ public class ContactBootstrap implements CommandLineRunner {
 	private void loadContacts() {
 		log.info(this.getClass().getSimpleName() + ": loadContacts()");
 		IntStream.range(1, 10).parallel()
-				.forEach(i -> contactService.saveNewContact(dataProducer.getValidContactDto()));
+				.forEach(i -> contactService.saveNewContact(DataProducer.getValidContactDto()));
 		log.info("Total Contacts Loaded : %s", contactService.getTotalContactCount().toString());
 	}
 }
