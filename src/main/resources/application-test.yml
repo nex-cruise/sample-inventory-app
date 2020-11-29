@@ -16,4 +16,4 @@ server:
   
 mts:
   security:
-    salt: qazplm425
+    salt: test425

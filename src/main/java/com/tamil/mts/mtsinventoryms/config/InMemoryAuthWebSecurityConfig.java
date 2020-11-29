@@ -46,6 +46,7 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 		
 	}
 
+	@SuppressWarnings("deprecation")
 	private List<UserDetails> buildUserDetails() {
 		List<UserDetails> userDetails = new ArrayList<UserDetails>();
 		UserDetails adminUser = User.withDefaultPasswordEncoder().username("testadmin").password("testpswd").roles("ADMIN")
