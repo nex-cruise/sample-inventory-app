@@ -44,19 +44,20 @@ public class ContactControllerIT extends BaseSecurityIT {
 	public void getEmployeeById() throws Exception {
 		given(contactService.getContactById(any(UUID.class))).willReturn(DataProducer.getValidContactDto());
 
-		mockMvc.perform(get(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString()).param("alldetails", "yes")
-				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+		mockMvc.perform(get(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
+				.with(httpBasic("normal", "password")).param("alldetails", "yes").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
 	}
-	
+
 	@Test
 	public void createValidEmployee() throws Exception {
 		ContactDto contactDto = DataProducer.getNewContactDto();
 		String contactDtoJson = objectMapper.writeValueAsString(contactDto);
 		given(contactService.saveNewContact(any(ContactDto.class))).willReturn(DataProducer.getValidContactDto());
-		
-		mockMvc.perform(post(CONTACT_API_PATH).with(httpBasic("admin", "murugan")).contentType(MediaType.APPLICATION_JSON).content(contactDtoJson))
-				.andExpect(status().isCreated());
+
+		mockMvc.perform(post(CONTACT_API_PATH).with(httpBasic("admin", "murugan"))
+				.contentType(MediaType.APPLICATION_JSON).content(contactDtoJson)).andExpect(status().isCreated());
 
 	}
-	
+
 }
