@@ -44,18 +44,19 @@ public class HomeControllerTest extends BaseSecurityIT {
 
 	@Test
 	void testHomeTestValidUser() throws Exception {
-		mockMvc.perform(get("/home").with(httpBasic("normal", "password"))).andExpect(status().isOk());
+		mockMvc.perform(get("/home").with(httpBasic("testuser", "testpswd"))).andExpect(status().isOk());
 	}
 	
 	@Test
 	void testHomeTestValidAdminUser() throws Exception {
-		mockMvc.perform(get("/home").with(httpBasic("admin", "murugan"))).andExpect(status().isOk());
+		mockMvc.perform(get("/home").with(httpBasic("testadmin", "testpswd"))).andExpect(status().isOk());
 	}
 	
 	@Test
 	void testHomeTestValidNormalUser() throws Exception {
-		mockMvc.perform(get("/home").with(httpBasic("normal", "password"))).andExpect(status().isOk());
+		mockMvc.perform(get("/home").with(httpBasic("testcustomer", "testpswd"))).andExpect(status().isOk());
 	}
+	
 	//TDD: To bypass the authentication for index page url '/'.
 	@Test
 	void testIndexPage() throws Exception {
