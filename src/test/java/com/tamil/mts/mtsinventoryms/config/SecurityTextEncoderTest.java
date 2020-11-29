@@ -67,4 +67,12 @@ public class SecurityTextEncoderTest {
 		String encodedTxt = textEncoder.ldapHashing("murugan");
 		assertTrue(textEncoder.ldapPasswordValid("murugan", encodedTxt));
 	}
+	
+	@Test
+	public void logSha256EncoderHashValues() {
+		log.info(textEncoder.sha256Hashing("testpswd"));
+		log.info(textEncoder.sha256Hashing("testpswd"));
+		String encodedTxt = textEncoder.sha256Hashing("murugan");
+		assertTrue(textEncoder.sha256PasswordValid("murugan", encodedTxt));
+	}
 }

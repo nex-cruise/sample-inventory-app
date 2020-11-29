@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 /**
  * @author murugan
@@ -29,9 +31,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+	@Value("${mts.security.salt}")
+	private String salt;
+
 	@Bean
 	PasswordEncoder pswdEncoder() {
-		return new LdapShaPasswordEncoder();
+		return new StandardPasswordEncoder(salt);
 	}
 
 	@Override
@@ -52,9 +57,9 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 //				.withUser("testcustomer").password("{noop}testpswd").roles("CUSTOMER");
 
 		//Using the encoded SSHA encoded pswd in the security config, so that the actual pswd is hidden.
-		auth.inMemoryAuthentication().withUser("testadmin").password("{SSHA}4XnfL77l1fEqJ5emTF250M6XWd3zG7P4sySVmw==").roles("ADMIN").and()
-				.withUser("testuser").password("testpswd").roles("USER").and().withUser("testcustomer")
-				.password("{SSHA}qBMrF0FNo73FeXRVIs/nCWPMKeR/VJ2twxkVSQ==").roles("CUSTOMER");
+		auth.inMemoryAuthentication().withUser("testadmin").password("e4d72ecdf020c87e9efb89721a7d7f91d444f6c43b82d425de41dfafe0993435b794c6d8eeee6447").roles("ADMIN").and()
+				.withUser("testuser").password("aab1bfa381e85f7048589d8d568c68ea0bb544abe547548c69a8be8364dc67c023ab279c5a70f7af").roles("USER").and().withUser("testcustomer")
+				.password("69bbf9b00ebc6b2bb56da3678de3b4d3b30f7dfc55cc4ed6ecafdad45f9bfc21d5bcf4cb86a8eb79").roles("CUSTOMER");
 
 //		for(UserDetails userDetails: buildUserDetails()) {
 //			auth.inMemoryAuthentication().withUser(userDetails);

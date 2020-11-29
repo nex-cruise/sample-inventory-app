@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 
@@ -52,5 +53,15 @@ public class SecurityTextEncoder {
 	public Boolean ldapPasswordValid(String text, String sshaEncodedText) {
 		PasswordEncoder ldapHashing = new LdapShaPasswordEncoder();
 		return ldapHashing.matches(text, sshaEncodedText);
+	}
+	
+	public String sha256Hashing(String text) {
+		PasswordEncoder sha256Hashing = new StandardPasswordEncoder(salt);
+		return sha256Hashing.encode(text);
+	}
+	
+	public Boolean sha256PasswordValid(String text, String shaEncodedText) {
+		PasswordEncoder sha256Hashing = new StandardPasswordEncoder(salt);
+		return sha256Hashing.matches(text, shaEncodedText);
 	}
 }

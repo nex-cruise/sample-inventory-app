@@ -16,6 +16,7 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.response
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.restdocs.snippet.Attributes.key;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
@@ -30,6 +31,7 @@ import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.payload.FieldDescriptor;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.StringUtils;
 
@@ -45,6 +47,7 @@ import com.tamil.mts.mtsinventoryms.web.model.ContactDto;
 @ExtendWith(RestDocumentationExtension.class)
 @AutoConfigureRestDocs(uriScheme = "https", uriHost = "mtsapps.in", uriPort = 80)
 @WebMvcTest(ContactController.class)
+@ActiveProfiles("test")
 public class ContactControllerTest {
 
 	@Autowired
@@ -63,9 +66,10 @@ public class ContactControllerTest {
 		given(contactService.getContactById(any(UUID.class))).willReturn(DataProducer.getValidContactDto());
 
 		ConstrainedFields fields = new ConstrainedFields(ContactDto.class);
-		
-		mockMvc.perform(get(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString()).param("alldetails", "yes")
-				.accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+
+		mockMvc.perform(get(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
+				.with(httpBasic("testadmin", "testpswd")).param("alldetails", "yes").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
 				.andDo(document("mts/api/v1/contact/get",
 						pathParameters(parameterWithName("contactId").description("UUID of the desired Contact Id.")),
 						responseFields(fields.withPath("uid").description("Contact Unique Id"),
@@ -91,8 +95,8 @@ public class ContactControllerTest {
 
 		ConstrainedFields fields = new ConstrainedFields(ContactDto.class);
 
-		mockMvc.perform(post(CONTACT_API_PATH).contentType(MediaType.APPLICATION_JSON).content(contactDtoJson))
-				.andExpect(status().isCreated())
+		mockMvc.perform(post(CONTACT_API_PATH).with(httpBasic("testadmin", "testpswd"))
+				.contentType(MediaType.APPLICATION_JSON).content(contactDtoJson)).andExpect(status().isCreated())
 				.andDo(document("mts/api/v1/contact/post",
 						requestFields(fields.withPath("uid").ignored(), fieldWithPath("version").ignored(),
 								fields.withPath("createdDate").ignored(), fieldWithPath("modifiedDate").ignored(),
