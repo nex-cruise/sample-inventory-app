@@ -6,10 +6,10 @@ spring:
     username: sa
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-  security:
-    user:
-      name: murugan
-      password: murugan
+  #security:
+    #user:
+      #name: murugan
+      #password: murugan
 
 server:
   port: 8002

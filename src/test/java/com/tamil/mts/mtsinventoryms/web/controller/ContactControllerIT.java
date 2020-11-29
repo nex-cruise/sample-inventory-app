@@ -9,6 +9,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
@@ -53,7 +54,7 @@ public class ContactControllerIT extends BaseSecurityIT {
 		String contactDtoJson = objectMapper.writeValueAsString(contactDto);
 		given(contactService.saveNewContact(any(ContactDto.class))).willReturn(DataProducer.getValidContactDto());
 		
-		mockMvc.perform(post(CONTACT_API_PATH).contentType(MediaType.APPLICATION_JSON).content(contactDtoJson))
+		mockMvc.perform(post(CONTACT_API_PATH).with(httpBasic("admin", "murugan")).contentType(MediaType.APPLICATION_JSON).content(contactDtoJson))
 				.andExpect(status().isCreated());
 
 	}

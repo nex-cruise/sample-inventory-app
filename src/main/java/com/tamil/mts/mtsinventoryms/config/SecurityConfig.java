@@ -5,11 +5,16 @@
  */
 package com.tamil.mts.mtsinventoryms.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 /**
  * @author murugan
@@ -22,11 +27,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests(authorize -> {
-			authorize.antMatchers("/","/h2-console/**").permitAll()
+			authorize.antMatchers("/", "/h2-console/**").permitAll()
 					// Providing access to contact resources GET without authentication.
 					.antMatchers(HttpMethod.GET, "/mts/api/v1/contact/*").permitAll();
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 	}
 
-	//TODO - Currently authentication of all POST requests failing from POSTMAN for Contact RestController..
+	// TODO - Currently authentication of all POST requests failing from POSTMAN for
+	// Contact RestController..
+
+	@Override
+	@Bean
+	protected UserDetailsService userDetailsService() {
+		UserDetails adminUser = User.withDefaultPasswordEncoder().username("admin").password("murugan").roles("ADMIN")
+				.build();
+		UserDetails readOnlyUser = User.withDefaultPasswordEncoder().username("default").password("default")
+				.roles("READONLY").build();
+		return new InMemoryUserDetailsManager(adminUser, readOnlyUser);
+	}
 }
