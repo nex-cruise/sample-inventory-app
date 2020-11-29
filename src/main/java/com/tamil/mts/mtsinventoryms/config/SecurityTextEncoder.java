@@ -6,6 +6,8 @@
 package com.tamil.mts.mtsinventoryms.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
 import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -36,7 +38,7 @@ public class SecurityTextEncoder {
 		return DigestUtils.md5DigestAsHex((text + salt).getBytes());
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	// Not recommended, doesn't do any manipulation on the given text.
 	// Hence the name NoOp.
 	// This PasswordEncoder is provided for legacy and testing purposes only.
@@ -63,5 +65,15 @@ public class SecurityTextEncoder {
 	public Boolean sha256PasswordValid(String text, String shaEncodedText) {
 		PasswordEncoder sha256Hashing = new StandardPasswordEncoder(salt);
 		return sha256Hashing.matches(text, shaEncodedText);
+	}
+	
+	public String bCryptHashing(String text) {
+		PasswordEncoder bcryptHashing = new BCryptPasswordEncoder(BCryptVersion.$2Y, 5);
+		return bcryptHashing.encode(text);
+	}
+	
+	public Boolean bCryptPasswordValid(String text, String shaEncodedText) {
+		PasswordEncoder bcryptHashing = new BCryptPasswordEncoder(BCryptVersion.$2Y, 5);
+		return bcryptHashing.matches(text, shaEncodedText);
 	}
 }

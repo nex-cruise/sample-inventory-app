@@ -75,4 +75,12 @@ public class SecurityTextEncoderTest {
 		String encodedTxt = textEncoder.sha256Hashing("murugan");
 		assertTrue(textEncoder.sha256PasswordValid("murugan", encodedTxt));
 	}
+	
+	@Test
+	public void logBcryptEncoderHashValues() {
+		log.info(textEncoder.bCryptHashing("testpswd"));
+		log.info(textEncoder.bCryptHashing("testpswd"));
+		String encodedTxt = textEncoder.bCryptHashing("murugan");
+		assertTrue(textEncoder.bCryptPasswordValid("murugan", encodedTxt));
+	}
 }
