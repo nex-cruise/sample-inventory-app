@@ -15,6 +15,8 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import com.tamil.mts.mtsinventoryms.security.SecurityTextEncoder;
+
 import lombok.extern.slf4j.Slf4j;
 
 /**

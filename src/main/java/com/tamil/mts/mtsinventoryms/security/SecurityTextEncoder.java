@@ -3,7 +3,7 @@
  * Created by murugan
  * Copyright � 2020 MTS [murugan425]. All Rights Reserved.
  */
-package com.tamil.mts.mtsinventoryms.config;
+package com.tamil.mts.mtsinventoryms.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
