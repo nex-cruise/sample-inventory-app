@@ -17,6 +17,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -30,7 +31,7 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 
 	@Bean
 	PasswordEncoder pswdEncoder() {
-		return NoOpPasswordEncoder.getInstance();
+		return new LdapShaPasswordEncoder();
 	}
 
 	@Override
@@ -50,9 +51,10 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 //				.withUser("testuser").password("{noop}testpswd").roles("USER").and()
 //				.withUser("testcustomer").password("{noop}testpswd").roles("CUSTOMER");
 
-		auth.inMemoryAuthentication().withUser("testadmin").password("testpswd").roles("ADMIN").and()
+		//Using the encoded SSHA encoded pswd in the security config, so that the actual pswd is hidden.
+		auth.inMemoryAuthentication().withUser("testadmin").password("{SSHA}4XnfL77l1fEqJ5emTF250M6XWd3zG7P4sySVmw==").roles("ADMIN").and()
 				.withUser("testuser").password("testpswd").roles("USER").and().withUser("testcustomer")
-				.password("testpswd").roles("CUSTOMER");
+				.password("{SSHA}qBMrF0FNo73FeXRVIs/nCWPMKeR/VJ2twxkVSQ==").roles("CUSTOMER");
 
 //		for(UserDetails userDetails: buildUserDetails()) {
 //			auth.inMemoryAuthentication().withUser(userDetails);

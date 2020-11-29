@@ -62,8 +62,8 @@ public class SecurityTextEncoderTest {
 
 	@Test
 	public void logLdapEncoderHashValues() {
-		log.info(textEncoder.ldapHashing("murugan"));
-		log.info(textEncoder.ldapHashing("murugan"));
+		log.info(textEncoder.ldapHashing("testpswd"));
+		log.info(textEncoder.ldapHashing("testpswd"));
 		String encodedTxt = textEncoder.ldapHashing("murugan");
 		assertTrue(textEncoder.ldapPasswordValid("murugan", encodedTxt));
 	}
