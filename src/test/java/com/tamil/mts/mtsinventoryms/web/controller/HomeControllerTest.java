@@ -50,7 +50,7 @@ public class HomeControllerTest extends BaseSecurityIT {
 
 	@Test
 	void testHomeTestValidUser() throws Exception {
-		mockMvc.perform(get("/home").with(httpBasic("murugan", "murugan425"))).andExpect(status().isOk());
+		mockMvc.perform(get("/home").with(httpBasic("murugan", "murugan"))).andExpect(status().isOk());
 	}
 	
 	//TDD: To bypass the authentication for index page url '/'.

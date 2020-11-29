@@ -22,10 +22,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests(authorize -> {
-			authorize.antMatchers("/").permitAll()
+			authorize.antMatchers("/","/h2-console/**").permitAll()
 					// Providing access to contact resources GET without authentication.
 					.antMatchers(HttpMethod.GET, "/mts/api/v1/contact/*").permitAll();
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 	}
 
+	//TODO - Currently authentication of all POST requests failing from POSTMAN for Contact RestController..
 }

@@ -9,7 +9,7 @@ spring:
   security:
     user:
       name: murugan
-      password: murugan425
+      password: murugan
 
 server:
   port: 8002
