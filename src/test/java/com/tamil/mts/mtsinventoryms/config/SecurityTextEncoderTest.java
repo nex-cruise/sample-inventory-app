@@ -51,5 +51,20 @@ public class SecurityTextEncoderTest {
 		assertEquals(textEncoder.md5HashingWithSalt("murugan", "testsalt"),
 				textEncoder.md5HashingWithSalt("murugan", "testsalt"), "md5Hashing - custom Salt test failed");
 	}
+	
 
+	@Test
+	public void logNoOpEncoderValues() {
+		log.info(textEncoder.noOpEncoder("murugan"));
+		log.info(textEncoder.noOpEncoder("murugan"));
+		assertTrue(true);
+	}
+
+	@Test
+	public void logLdapEncoderHashValues() {
+		log.info(textEncoder.ldapHashing("murugan"));
+		log.info(textEncoder.ldapHashing("murugan"));
+		String encodedTxt = textEncoder.ldapHashing("murugan");
+		assertTrue(textEncoder.ldapPasswordValid("murugan", encodedTxt));
+	}
 }
