@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -16,6 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
  * @author murugan
@@ -24,6 +27,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Configuration
 @EnableWebSecurity
 public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+	@Bean
+	PasswordEncoder pswdEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -37,24 +45,30 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		// noop - password encoder
-		// auth.inMemoryAuthentication().withUser("admin").password("{noop}murugan").roles("ADMIN").and()
-		//		.withUser("normal").password("{noop}password").roles("READONLY");
 
-		for(UserDetails userDetails: buildUserDetails()) {
-			auth.inMemoryAuthentication().withUser(userDetails);
-		}
-		
+//		auth.inMemoryAuthentication().withUser("testadmin").password("{noop}testpswd").roles("ADMIN").and()
+//				.withUser("testuser").password("{noop}testpswd").roles("USER").and()
+//				.withUser("testcustomer").password("{noop}testpswd").roles("CUSTOMER");
+
+		auth.inMemoryAuthentication().withUser("testadmin").password("testpswd").roles("ADMIN").and()
+				.withUser("testuser").password("testpswd").roles("USER").and().withUser("testcustomer")
+				.password("testpswd").roles("CUSTOMER");
+
+//		for(UserDetails userDetails: buildUserDetails()) {
+//			auth.inMemoryAuthentication().withUser(userDetails);
+//		}
+
 	}
 
 	@SuppressWarnings("deprecation")
 	private List<UserDetails> buildUserDetails() {
 		List<UserDetails> userDetails = new ArrayList<UserDetails>();
-		UserDetails adminUser = User.withDefaultPasswordEncoder().username("testadmin").password("testpswd").roles("ADMIN")
-				.build();
+		UserDetails adminUser = User.withDefaultPasswordEncoder().username("testadmin").password("testpswd")
+				.roles("ADMIN").build();
 		UserDetails normalUser = User.withDefaultPasswordEncoder().username("testuser").password("testpswd")
 				.roles("USER").build();
-		UserDetails customer = User.withDefaultPasswordEncoder().username("testcustomer").password("testpswd").roles("CUSTOMER")
-				.build();
+		UserDetails customer = User.withDefaultPasswordEncoder().username("testcustomer").password("testpswd")
+				.roles("CUSTOMER").build();
 		Collections.addAll(userDetails, adminUser, normalUser, customer);
 		return userDetails;
 	}
