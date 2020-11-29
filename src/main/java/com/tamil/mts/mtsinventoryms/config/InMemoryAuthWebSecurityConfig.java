@@ -18,12 +18,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder.BCryptVersion;
-import org.springframework.security.crypto.password.LdapShaPasswordEncoder;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+
+import com.tamil.mts.mtsinventoryms.security.SecurityTextEncoderFactories;
 
 /**
  * @author murugan
@@ -38,30 +35,33 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 
 	@Bean
 	PasswordEncoder pswdEncoder() {
-		return new BCryptPasswordEncoder(BCryptVersion.$2Y, 5);
+		return SecurityTextEncoderFactories.createDelegatingPasswordEncoder(salt);
 	}
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests(authorize -> {
 			authorize.antMatchers("/", "/h2-console/**").permitAll();
-			// Providing access to contact resources GET without authentication.
-			// .antMatchers(HttpMethod.GET, "/mts/api/v1/contact/*").permitAll();
+//				Providing access to contact resources GET without authentication.
+//				.antMatchers(HttpMethod.GET, "/mts/api/v1/contact/*").permitAll();
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 	}
 
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		// noop - password encoder
+//		noop - password encoder
 
 //		auth.inMemoryAuthentication().withUser("testadmin").password("{noop}testpswd").roles("ADMIN").and()
 //				.withUser("testuser").password("{noop}testpswd").roles("USER").and()
 //				.withUser("testcustomer").password("{noop}testpswd").roles("CUSTOMER");
 
-		//Using the encoded SSHA encoded pswd in the security config, so that the actual pswd is hidden.
-		auth.inMemoryAuthentication().withUser("testadmin").password("$2y$05$1kTk2bUWCYbXOCB4Lcb5uuJfY7XB/XIxhfof5ElbObdiiQM.JcxCm").roles("ADMIN").and()
-				.withUser("testuser").password("$2y$05$CB28WM8ozPaCHrK3IEAACeL3sjc57kxYoTcayG5t2ddYxNj56St0C").roles("USER").and().withUser("testcustomer")
-				.password("$2y$05$Vqs4gI5kg75NJuQzApK6kOjpoLkV1zoYE2V0RfgQt6KvgXDlQzMs.").roles("CUSTOMER");
+//		Using the encoded SSHA encoded pswd in the security config, so that the actual pswd is hidden.
+		auth.inMemoryAuthentication().withUser("testadmin")
+				.password("{bcrypt}$2y$05$1kTk2bUWCYbXOCB4Lcb5uuJfY7XB/XIxhfof5ElbObdiiQM.JcxCm").roles("ADMIN").and()
+				.withUser("testuser").password("{ldap}{SSHA}iSljD/RdAnMFw3Pdv3+XC5mj2JABFNlzPjldSQ==").roles("USER")
+				.and().withUser("testcustomer")
+				.password("{sha256}11e8fef4319c9687504cf9bc1066be5aa7c1e13c38718963e5b9081ea454be14f4f38a5aa1c045e9")
+				.roles("CUSTOMER");
 
 //		for(UserDetails userDetails: buildUserDetails()) {
 //			auth.inMemoryAuthentication().withUser(userDetails);
@@ -69,7 +69,7 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 
 	}
 
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings({"deprecation", "unused"})
 	private List<UserDetails> buildUserDetails() {
 		List<UserDetails> userDetails = new ArrayList<UserDetails>();
 		UserDetails adminUser = User.withDefaultPasswordEncoder().username("testadmin").password("testpswd")
