@@ -24,6 +24,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.tamil.mts.mtsinventoryms.security.RestHeaderAuthFilter;
+import com.tamil.mts.mtsinventoryms.security.RestUrlAuthFilter;
 import com.tamil.mts.mtsinventoryms.security.SecurityTextEncoderFactories;
 
 /**
@@ -48,12 +49,21 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 		return filter;
 	}
 
+	private RestUrlAuthFilter restUrlAuthFilter(AuthenticationManager authenticationManager) {
+		RestUrlAuthFilter filter = new RestUrlAuthFilter(new AntPathRequestMatcher("/mts/api/v1/**"));
+		filter.setAuthenticationManager(authenticationManager);
+		return filter;
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
-				.csrf().disable();
+		http.csrf().disable();
 
-		http.csrf().disable().authorizeRequests(authorize -> {
+		http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+
+		http.addFilterBefore(restUrlAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
+
+		http.authorizeRequests(authorize -> {
 			authorize.antMatchers("/", "/h2-console/**").permitAll();
 //				Providing access to contact resources GET without authentication.
 //				.antMatchers(HttpMethod.GET, "/mts/api/v1/contact/*").permitAll();

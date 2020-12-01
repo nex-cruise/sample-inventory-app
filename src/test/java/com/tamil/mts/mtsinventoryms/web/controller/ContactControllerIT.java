@@ -63,7 +63,6 @@ public class ContactControllerIT extends BaseSecurityIT {
 
 		mockMvc.perform(post(CONTACT_API_PATH).with(httpBasic("testadmin", "testpswd"))
 				.contentType(MediaType.APPLICATION_JSON).content(contactDtoJson)).andExpect(status().isCreated());
-
 	}
 
 	@Test
@@ -75,10 +74,26 @@ public class ContactControllerIT extends BaseSecurityIT {
 
 	@Test
 	@DisplayName("Test Delete contact - Header Key/Secret Authentication")
-	public void deleteEmployeeById() throws Exception {
+	public void deleteEmployeeByIdHeaderKey() throws Exception {
 		mockMvc.perform(delete(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
 //				.with(httpBasic("testadmin", "testpswd"))).andExpect(status().isOk());
 				.header("Api-Key", "testuser").header("Api-Secret", "testpswd")).andExpect(status().isOk());
 	}
 
+	@Test
+	@DisplayName("Test Delete contact - Header Invalid Key/Secret Authentication")
+	public void deleteEmployeeByInvalidIdHeaderKey() throws Exception {
+		mockMvc.perform(delete(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
+				.header("Api-Key", "invalid").header("Api-Secret", "jklhff")).andExpect(status().is4xxClientError());
+	}
+	
+	@Test
+	@DisplayName("Test Get contact - Url Key/Secret Authentication")
+	public void getEmployeeByIdUrlKey() throws Exception {
+		given(contactService.getContactById(any(UUID.class))).willReturn(DataProducer.getValidContactDto());
+
+		mockMvc.perform(get(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
+				.param("Api-Key", "testuser").param("Api-Secret", "testpswd").accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk());
+	}
 }

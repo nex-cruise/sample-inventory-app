@@ -13,12 +13,12 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
  * @author murugan
  *
  */
-public class RestHeaderAuthFilter extends AbstractRestAuthFilter {
+public class RestUrlAuthFilter extends AbstractRestAuthFilter {
 
 	/**
 	 * @param requiresAuthenticationRequestMatcher
 	 */
-	public RestHeaderAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
+	public RestUrlAuthFilter(RequestMatcher requiresAuthenticationRequestMatcher) {
 		super(requiresAuthenticationRequestMatcher);
 	}
 
@@ -28,7 +28,7 @@ public class RestHeaderAuthFilter extends AbstractRestAuthFilter {
 	 */
 	@Override
 	protected String getKey(HttpServletRequest request) {
-		return request.getHeader("Api-Key");
+		return request.getParameter("Api-Key");
 	}
 
 	/**
@@ -37,6 +37,6 @@ public class RestHeaderAuthFilter extends AbstractRestAuthFilter {
 	 */
 	@Override
 	protected String getSecret(HttpServletRequest request) {
-		return request.getHeader("Api-Secret");
+		return request.getParameter("Api-Secret");
 	}
 }
