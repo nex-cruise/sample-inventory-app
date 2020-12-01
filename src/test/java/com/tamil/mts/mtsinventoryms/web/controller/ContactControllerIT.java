@@ -10,10 +10,12 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.post;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.httpBasic;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -43,6 +45,7 @@ public class ContactControllerIT extends BaseSecurityIT {
 	private final String CONTACT_API_PATH = "/mts/api/v1/contact/";
 
 	@Test
+	@DisplayName("Test Get contact - HttpBasic Authentication")
 	public void getEmployeeById() throws Exception {
 		given(contactService.getContactById(any(UUID.class))).willReturn(DataProducer.getValidContactDto());
 
@@ -52,6 +55,7 @@ public class ContactControllerIT extends BaseSecurityIT {
 	}
 
 	@Test
+	@DisplayName("Test Create valid contact - HttpBasic Authentication")
 	public void createValidEmployee() throws Exception {
 		ContactDto contactDto = DataProducer.getNewContactDto();
 		String contactDtoJson = objectMapper.writeValueAsString(contactDto);
@@ -60,6 +64,14 @@ public class ContactControllerIT extends BaseSecurityIT {
 		mockMvc.perform(post(CONTACT_API_PATH).with(httpBasic("testadmin", "testpswd"))
 				.contentType(MediaType.APPLICATION_JSON).content(contactDtoJson)).andExpect(status().isCreated());
 
+	}
+
+	@Test
+	@DisplayName("Test Delete contact - Header Key/Secret Authentication")
+	public void deleteEmployeeById() throws Exception {
+		mockMvc.perform(delete(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
+				.with(httpBasic("testadmin", "testpswd"))).andExpect(status().isOk());
+//				.header("Api-key", "testuser").header("Api-secret", "testpswd")).andExpect(status().isOk());
 	}
 
 }
