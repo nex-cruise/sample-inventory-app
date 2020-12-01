@@ -23,6 +23,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.headers().frameOptions().sameOrigin();
+		
 		http.authorizeRequests(authorize -> {
 			authorize.antMatchers("/", "/h2-console/**").permitAll();
 					// Providing access to contact resources GET without authentication.

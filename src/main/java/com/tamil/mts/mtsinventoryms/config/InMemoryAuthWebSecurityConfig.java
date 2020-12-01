@@ -63,6 +63,8 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 
 		http.addFilterBefore(restUrlAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class);
 
+		http.headers().frameOptions().sameOrigin();
+		
 		http.authorizeRequests(authorize -> {
 			authorize.antMatchers("/", "/h2-console/**").permitAll();
 //				Providing access to contact resources GET without authentication.
