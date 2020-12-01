@@ -55,7 +55,7 @@ public class ContactControllerIT extends BaseSecurityIT {
 	}
 
 	@Test
-	@DisplayName("Test Create valid contact - HttpBasic Authentication")
+	@DisplayName("Test Create contact - HttpBasic Authentication")
 	public void createValidEmployee() throws Exception {
 		ContactDto contactDto = DataProducer.getNewContactDto();
 		String contactDtoJson = objectMapper.writeValueAsString(contactDto);
@@ -67,11 +67,18 @@ public class ContactControllerIT extends BaseSecurityIT {
 	}
 
 	@Test
+	@DisplayName("Test Delete contact - HttpBasic Authentication")
+	public void deleteEmployeeByIdHttpBasic() throws Exception {
+		mockMvc.perform(delete(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
+				.with(httpBasic("testadmin", "testpswd"))).andExpect(status().isOk());
+	}
+
+	@Test
 	@DisplayName("Test Delete contact - Header Key/Secret Authentication")
 	public void deleteEmployeeById() throws Exception {
 		mockMvc.perform(delete(CONTACT_API_PATH + "{contactId}", UUID.randomUUID().toString())
-				.with(httpBasic("testadmin", "testpswd"))).andExpect(status().isOk());
-//				.header("Api-key", "testuser").header("Api-secret", "testpswd")).andExpect(status().isOk());
+//				.with(httpBasic("testadmin", "testpswd"))).andExpect(status().isOk());
+				.header("Api-Key", "testuser").header("Api-Secret", "testpswd")).andExpect(status().isOk());
 	}
 
 }

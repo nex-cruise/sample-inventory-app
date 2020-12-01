@@ -12,6 +12,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,7 +20,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+import com.tamil.mts.mtsinventoryms.security.RestHeaderAuthFilter;
 import com.tamil.mts.mtsinventoryms.security.SecurityTextEncoderFactories;
 
 /**
@@ -38,8 +42,17 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 		return SecurityTextEncoderFactories.createDelegatingPasswordEncoder(salt);
 	}
 
+	public RestHeaderAuthFilter restHeaderAuthFilter(AuthenticationManager authenticationManager) {
+		RestHeaderAuthFilter filter = new RestHeaderAuthFilter(new AntPathRequestMatcher("/mts/api/v1/**"));
+		filter.setAuthenticationManager(authenticationManager);
+		return filter;
+	}
+
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
+		http.addFilterBefore(restHeaderAuthFilter(authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+				.csrf().disable();
+
 		http.csrf().disable().authorizeRequests(authorize -> {
 			authorize.antMatchers("/", "/h2-console/**").permitAll();
 //				Providing access to contact resources GET without authentication.
@@ -69,7 +82,7 @@ public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter 
 
 	}
 
-	@SuppressWarnings({"deprecation", "unused"})
+	@SuppressWarnings({ "deprecation", "unused" })
 	private List<UserDetails> buildUserDetails() {
 		List<UserDetails> userDetails = new ArrayList<UserDetails>();
 		UserDetails adminUser = User.withDefaultPasswordEncoder().username("testadmin").password("testpswd")
