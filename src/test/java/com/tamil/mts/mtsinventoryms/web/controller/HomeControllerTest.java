@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 
@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
  * @author murugan
  *
  */
-@WebMvcTest(HomeController.class)
+@SpringBootTest
 @ActiveProfiles("test")
 public class HomeControllerTest extends BaseSecurityIT {
 
