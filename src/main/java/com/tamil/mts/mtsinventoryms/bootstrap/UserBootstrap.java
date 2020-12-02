@@ -5,6 +5,12 @@
  */
 package com.tamil.mts.mtsinventoryms.bootstrap;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
@@ -44,6 +50,11 @@ public class UserBootstrap implements CommandLineRunner {
 		Authority customerRole = authorityRepository.save(Authority.builder().role("CUSTOMER").build());
 		log.info(String.format("Total Authorities Loaded : %d", authorityRepository.count()));
 
+//		Set<Authority> authorities = new HashSet<>();
+//		Collections.addAll(authorities, adminRole, userRole, customerRole);
+//		List<String> roles = authorities.stream().map(Authority::getRole).collect(Collectors.toList());
+//		log.info("List of MTS Authority Roles: " + roles.toString());
+		
 		log.info(this.getClass().getSimpleName() + ": loadUsers()");
 		MTSUser adminUser = MTSUser.builder().username("testadmin").password(passwordEncoder.encode("testpswd"))
 				.authority(adminRole).build();
