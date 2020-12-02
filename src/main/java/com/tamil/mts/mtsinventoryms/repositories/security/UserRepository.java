@@ -19,5 +19,5 @@ import com.tamil.mts.mtsinventoryms.domain.security.MTSUser;
 @Repository
 public interface UserRepository extends JpaRepository<MTSUser, Integer>{
 
-	Optional<MTSUser> loadUserByUsername(String username);
+	Optional<MTSUser> findUserByUsername(String username);
 }
