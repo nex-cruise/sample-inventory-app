@@ -31,8 +31,8 @@ import com.tamil.mts.mtsinventoryms.security.SecurityTextEncoderFactories;
  * @author murugan
  *
  */
-@Configuration
-@EnableWebSecurity
+//@Configuration
+//@EnableWebSecurity
 public class InMemoryAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Value("${mts.security.salt}")
