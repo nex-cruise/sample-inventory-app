@@ -42,7 +42,7 @@ public class JpaAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${mts.security.salt}")
 	private String salt;
 
-	private final UserDetailsAuthService userDetailsAuthService;
+//	private final UserDetailsAuthService userDetailsAuthService;
 
 	@Bean
 	PasswordEncoder pswdEncoder() {
@@ -76,10 +76,10 @@ public class JpaAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 	}
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsAuthService).passwordEncoder(pswdEncoder());
-	}
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//		auth.userDetailsService(userDetailsAuthService).passwordEncoder(pswdEncoder());
+//	}
 
 	@SuppressWarnings({ "deprecation", "unused" })
 	private List<UserDetails> buildUserDetails() {
