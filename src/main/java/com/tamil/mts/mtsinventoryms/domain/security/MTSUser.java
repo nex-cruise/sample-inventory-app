@@ -38,7 +38,7 @@ import lombok.Singular;
 @AllArgsConstructor
 @Builder
 @Entity
-public class User {
+public class MTSUser {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

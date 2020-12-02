@@ -10,7 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.tamil.mts.mtsinventoryms.domain.security.Authority;
-import com.tamil.mts.mtsinventoryms.domain.security.User;
+import com.tamil.mts.mtsinventoryms.domain.security.MTSUser;
 import com.tamil.mts.mtsinventoryms.repositories.security.AuthorityRepository;
 import com.tamil.mts.mtsinventoryms.repositories.security.UserRepository;
 
@@ -45,11 +45,11 @@ public class UserBootstrap implements CommandLineRunner {
 		log.info(String.format("Total Authorities Loaded : %d", authorityRepository.count()));
 
 		log.info(this.getClass().getSimpleName() + ": loadUsers()");
-		User adminUser = User.builder().username("testadmin").password(passwordEncoder.encode("testpswd"))
+		MTSUser adminUser = MTSUser.builder().username("testadmin").password(passwordEncoder.encode("testpswd"))
 				.authority(adminRole).build();
-		User testUser = User.builder().username("testuser").password(passwordEncoder.encode("testpswd"))
+		MTSUser testUser = MTSUser.builder().username("testuser").password(passwordEncoder.encode("testpswd"))
 				.authority(userRole).build();
-		User customerUser = User.builder().username("testcustomer").password(passwordEncoder.encode("testpswd"))
+		MTSUser customerUser = MTSUser.builder().username("testcustomer").password(passwordEncoder.encode("testpswd"))
 				.authority(customerRole).build();
 		userRepository.save(adminUser);
 		userRepository.save(testUser);
