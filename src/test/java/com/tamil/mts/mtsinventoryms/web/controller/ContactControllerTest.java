@@ -36,6 +36,7 @@ import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.constraints.ConstraintDescriptions;
 import org.springframework.restdocs.payload.FieldDescriptor;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.StringUtils;
@@ -52,8 +53,8 @@ import com.tamil.mts.mtsinventoryms.web.model.ContactDto;
  * 
  * @author murugan
  */
-@ExtendWith(RestDocumentationExtension.class)
-@AutoConfigureRestDocs(uriScheme = "https", uriHost = "mtsapps.in", uriPort = 80)
+@ExtendWith({RestDocumentationExtension.class, SpringExtension.class})
+//@AutoConfigureRestDocs(uriScheme = "https", uriHost = "mtsapps.in", uriPort = 80)
 @SpringBootTest
 @ActiveProfiles("test")
 public class ContactControllerTest {
