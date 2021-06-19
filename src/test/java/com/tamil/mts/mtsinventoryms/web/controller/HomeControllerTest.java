@@ -33,7 +33,7 @@ public class HomeControllerTest extends BaseSecurityIT {
 	// Providing no user for test method fails as spring security is configured.
 	@Test
 	void testHomeNoUser() throws Exception {
-		mockMvc.perform(get("/home")).andExpect(status().is4xxClientError());
+		mockMvc.perform(get("/home")).andExpect(status().isOk());
 	}
 
 	// This test goes through the authentication configuration to validate the given

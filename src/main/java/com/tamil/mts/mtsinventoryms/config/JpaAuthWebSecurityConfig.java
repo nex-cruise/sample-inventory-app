@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Configuration
-//@EnableWebSecurity
+@EnableWebSecurity
 @RequiredArgsConstructor
 public class JpaAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -70,7 +70,7 @@ public class JpaAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 
 		http.authorizeRequests(authorize -> {
-			authorize.antMatchers("/", "/h2-console/**").permitAll();
+			authorize.antMatchers("/", "/home", "/ping" , "/h2-console/**").permitAll();
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 	}
 

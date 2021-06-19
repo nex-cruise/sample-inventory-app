@@ -5,6 +5,7 @@
  */
 package com.tamil.mts.mtsinventoryms.web.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -23,5 +24,10 @@ public class HomeController {
 	@GetMapping({ "home" })
 	public String home() {
 		return "home";
+	}
+	
+	@GetMapping({ "ping" })
+	public ResponseEntity<String> ping() {
+		return ResponseEntity.ok("PONG! PONG!");
 	}
 }

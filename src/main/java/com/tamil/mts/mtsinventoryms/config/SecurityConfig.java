@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 		
 		http.authorizeRequests(authorize -> {
-			authorize.antMatchers("/", "/h2-console/**").permitAll();
+			authorize.antMatchers("/", "/home", "/ping" , "/h2-console/**").permitAll();
 					// Providing access to contact resources GET without authentication.
 					//.antMatchers(HttpMethod.GET, "/mts/api/v1/contact/*").permitAll();
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
