@@ -33,7 +33,7 @@ import lombok.RequiredArgsConstructor;
  *
  */
 @Configuration
-@EnableWebSecurity
+//@EnableWebSecurity
 @RequiredArgsConstructor
 public class JpaAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 
