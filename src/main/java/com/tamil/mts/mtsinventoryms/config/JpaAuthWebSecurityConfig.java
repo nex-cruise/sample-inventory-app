@@ -70,7 +70,7 @@ public class JpaAuthWebSecurityConfig extends WebSecurityConfigurerAdapter {
 		http.headers().frameOptions().sameOrigin();
 
 		http.authorizeRequests(authorize -> {
-			authorize.antMatchers("/", "/home", "/ping" , "/h2-console/**").permitAll();
+			authorize.antMatchers("/", "/home", "/ping" , "/h2-console/**", "/mts/api/v1/contact/*").permitAll();
 		}).authorizeRequests().anyRequest().authenticated().and().formLogin().and().httpBasic();
 	}
 

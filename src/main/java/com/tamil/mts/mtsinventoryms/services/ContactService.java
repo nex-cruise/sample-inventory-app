@@ -5,6 +5,7 @@
  */
 package com.tamil.mts.mtsinventoryms.services;
 
+import java.util.List;
 import java.util.UUID;
 
 import com.tamil.mts.mtsinventoryms.web.model.ContactDto;
@@ -24,5 +25,7 @@ public interface ContactService {
 	ContactDto updateContact(UUID empId, ContactDto contactDto);
 
 	void deleteContactById(UUID empId);
+
+	List<ContactDto> findAll();
 	
 }

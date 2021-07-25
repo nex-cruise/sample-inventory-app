@@ -5,6 +5,8 @@
  */
 package com.tamil.mts.mtsinventoryms.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -30,6 +32,14 @@ public class ContactServiceImpl implements ContactService {
 
 	private final ContactMapper contactMapper;
 
+	@Override
+	public List<ContactDto> findAll() {
+		final List<ContactDto> contactDtos = new ArrayList<>();
+		Iterable<Contact> contacts = contactRepository.findAll();
+		contacts.forEach(contact -> contactDtos.add(contactMapper.convertToModel(contact)));
+		return contactDtos;
+	}
+	
 	@Override
 	public Long getTotalContactCount() {
 		return contactRepository.count();
@@ -65,4 +75,5 @@ public class ContactServiceImpl implements ContactService {
 		log.info("TODO: Implement delete Employee");
 		contactRepository.deleteById(contactId);
 	}
+
 }
